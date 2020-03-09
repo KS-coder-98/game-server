@@ -9,7 +9,6 @@
 #include <termio.h>
 #include "commonObjects.h"
 #include "commonLibray.h"
-//#include <vector>
 
 class Encampment {
     Point position;

@@ -8,9 +8,7 @@
 #include "Map_Window.h"
 #include "Point.h"
 #include "commonLibray.h"
-
-#define BEAST 1
-#define PLAYER 2
+#include "CONST_AND_DEFINE.h"
 
 
 class Character {

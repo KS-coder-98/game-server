@@ -8,10 +8,21 @@
 #include "Map_Window.h"
 #include "Point.h"
 #include "commonLibray.h"
+#include "CONST_AND_DEFINE.h"
 #define COINS 1
 #define TREASURE 2
-#define LARGETRASURE 3
-#define LEFTTREASURE 4
+#define LARGE_TREASURE 3
+#define LEFT_TREASURE 4
+
+#define COINS_SIGN "C"
+
+#define TREASURE_SIGN "t"
+
+#define LARGE_TREASURE_SIGN "T"
+
+#define LEFT_TREASURE_SIGN "D"
+
+
 
 class Beneficial_items {
     protected:

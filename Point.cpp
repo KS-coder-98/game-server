@@ -29,14 +29,14 @@ Point::Point(): x(0), y(0)
 {
 }
 
-void Point::findFreeSpace(struct game const* dataGane) {
-    unsigned int tempCoordinate = rand() % (dataGane->mapS->size() - 2) + 1;
+void Point::findFreeSpace(struct game const* dataGame) {
+    unsigned int tempCoordinate = rand() % (dataGame->mapS->size() - 2) + 1;
     y = tempCoordinate;
-    auto temp = dataGane->mapS;
+    auto temp = dataGame->mapS;
         while (true){
         tempCoordinate = rand() % (  (*temp)[1].length() - 2 ) + 1;
         x = tempCoordinate;
-        if ( (*temp)[y][x] != '#' )
+        if ( (*temp)[y][x] != WALL )
             break;
     }
 }

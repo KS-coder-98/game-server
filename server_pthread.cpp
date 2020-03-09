@@ -8,16 +8,16 @@ void add_item(struct game *a, const Map_Window * maze, std::mutex* _lock, int op
 {
     if ( optionAdd == 'c' )
     {
-        a->all_coins.push_back(new Coins(a));
-        mvprintw(50, 30, "||||_%d_!!!!!!!!!!!!", a->all_coins.size());
+        a->allCoins.push_back(new Coins(a));
+        mvprintw(50, 30, "||||_%d_!!!!!!!!!!!!", a->allCoins.size());
     }
     else if ( optionAdd == 't')
     {
-        a->all_tresure.push_back(new Treasure(a));
+        a->allTreasure.push_back(new Treasure(a));
     }
     else if ( optionAdd == 'T' )
     {
-        a->all_large_treasure.push_back(new LargeTreasure(a));
+        a->allLargeTreasure.push_back(new LargeTreasure(a));
     }
     else if ( optionAdd == 'b' )
     {
@@ -27,19 +27,19 @@ void add_item(struct game *a, const Map_Window * maze, std::mutex* _lock, int op
 
 }
 
-void printAll(struct game *a, const Map_Window & maze, std::mutex* _lock, sem_t * semafor)
+void printAll(struct game *a, const Map_Window & maze, std::mutex* _lock, sem_t * sem)
 {
     while (a->stopFlag != 1){
-        sem_wait(semafor);
+        sem_wait(sem);
         _lock->lock();
         maze.print_maze();
-        for ( auto i : a->all_coins ) {
+        for ( auto i : a->allCoins ) {
             i->print_item(1, maze);
         }
-        for (auto i : a->all_large_treasure) {
+        for (auto i : a->allLargeTreasure) {
             i->print_item(3, maze);
         }
-        for (auto i : a->all_tresure) {
+        for (auto i : a->allTreasure) {
             i->print_item(2, maze);
         }
         for (auto i : a->allLeftTreasure )
@@ -55,11 +55,11 @@ void printAll(struct game *a, const Map_Window & maze, std::mutex* _lock, sem_t 
     }
 }
 
-void input(std::mutex *_lock, struct game* dataGame, Map_Window * maze, sem_t *semafor)
+void input(std::mutex *_lock, struct game* dataGame, Map_Window * maze, sem_t *sem)
 {
     int option = ' ';
     while ( option != 'e' ){
-        sem_wait(semafor);
+        sem_wait(sem);
         option = getch();
         _lock->lock();
         if ( option != -1)
@@ -106,10 +106,10 @@ void printStats(struct game *dataGame, std::mutex* _lock, sem_t *sem)//dorobic s
 
 
 void collisionDetection(struct game* dataGame, sem_t *sem, std::mutex *lock) {
-    auto coins = std::begin(dataGame->all_coins);
+    auto coins = std::begin(dataGame->allCoins);
     auto player = std::begin(dataGame->allPlayer);
-    auto tresure = std::begin(dataGame->all_tresure);
-    auto largeTresure = std::begin(dataGame->all_large_treasure);
+    auto tresure = std::begin(dataGame->allTreasure);
+    auto largeTresure = std::begin(dataGame->allLargeTreasure);
     auto leftTreasure = std::begin(dataGame->allLeftTreasure);
     auto beast = std::begin(dataGame->allBeast);
     while (dataGame->stopFlag != 1) {
@@ -118,11 +118,11 @@ void collisionDetection(struct game* dataGame, sem_t *sem, std::mutex *lock) {
         // test coins
         player = std::begin(dataGame->allPlayer);
         while (player != std::end(dataGame->allPlayer)) {
-            coins = std::begin(dataGame->all_coins);
-            while (coins != std::end(dataGame->all_coins)) {
+            coins = std::begin(dataGame->allCoins);
+            while (coins != std::end(dataGame->allCoins)) {
                 if ((*coins)->getPosition() == (*player)->getPosition()) {
                     (*player)->addPoints(1);
-                    dataGame->all_coins.erase(coins);
+                    dataGame->allCoins.erase(coins);
                     continue;
                 }
                 coins++;
@@ -132,11 +132,11 @@ void collisionDetection(struct game* dataGame, sem_t *sem, std::mutex *lock) {
         //test treasure
         player = std::begin(dataGame->allPlayer);
         while (player != std::end(dataGame->allPlayer)) {
-            tresure = std::begin(dataGame->all_tresure);
-            while (tresure != std::end(dataGame->all_tresure)) {
+            tresure = std::begin(dataGame->allTreasure);
+            while (tresure != std::end(dataGame->allTreasure)) {
                 if ((*tresure)->getPosition() == (*player)->getPosition()) {
                     (*player)->addPoints((*tresure)->getValue());
-                    dataGame->all_tresure.erase(tresure);
+                    dataGame->allTreasure.erase(tresure);
                     continue;
                 }
                 tresure++;
@@ -146,11 +146,11 @@ void collisionDetection(struct game* dataGame, sem_t *sem, std::mutex *lock) {
         //test largetreasure
         player = std::begin(dataGame->allPlayer);
         while (player != std::end(dataGame->allPlayer)) {
-            largeTresure = std::begin(dataGame->all_large_treasure);
-            while (largeTresure != std::end(dataGame->all_large_treasure)) {
+            largeTresure = std::begin(dataGame->allLargeTreasure);
+            while (largeTresure != std::end(dataGame->allLargeTreasure)) {
                 if ((*largeTresure)->getPosition() == (*player)->getPosition()) {
                     (*player)->addPoints((*largeTresure)->getValue());
-                    dataGame->all_large_treasure.erase(largeTresure);
+                    dataGame->allLargeTreasure.erase(largeTresure);
                     continue;
                 }
                 largeTresure++;
@@ -256,31 +256,31 @@ void printBackgroundStats() {
 
 //        while ( player != std::end(dataGame->allPlayer) ){
 //            lock->lock();
-//            coins = std::begin(dataGame->all_coins);
-//            tresure = std::begin(dataGame->all_tresure);
-//            largeTresure = std::begin(dataGame->all_large_treasure);
+//            coins = std::begin(dataGame->allCoins);
+//            tresure = std::begin(dataGame->allTreasure);
+//            largeTresure = std::begin(dataGame->allLargeTreasure);
 //            leftTreasure = std::begin(dataGame->allLeftTreasure);
 //            beast = std::begin(dataGame->allBeast);
-//            while ( coins != std::end(dataGame->all_coins)){
+//            while ( coins != std::end(dataGame->allCoins)){
 //                if ( (*coins)->getPosition() == (*player)->getPosition() ){
 //                    (*player)->addPoints(1);
-//                    dataGame->all_coins.erase(coins);
+//                    dataGame->allCoins.erase(coins);
 //                    continue;
 //                }
 //                coins++;
 //            }
-//            while ( tresure != std::end(dataGame->all_tresure)){
+//            while ( tresure != std::end(dataGame->allTreasure)){
 //                if ( (*tresure)->getPosition() == (*player)->getPosition() ){
 //                    (*player)->addPoints((*tresure)->getValue());
-//                    dataGame->all_tresure.erase(tresure);
+//                    dataGame->allTreasure.erase(tresure);
 //                    continue;
 //                }
 //                tresure++;
 //            }
-//            while ( largeTresure != std::end(dataGame->all_large_treasure)){
+//            while ( largeTresure != std::end(dataGame->allLargeTreasure)){
 //                if ( (*largeTresure)->getPosition() == (*player)->getPosition() ){
 //                    (*player)->addPoints((*largeTresure)->getValue());
-//                    dataGame->all_large_treasure.erase(largeTresure);
+//                    dataGame->allLargeTreasure.erase(largeTresure);
 //                    continue;
 //                }
 //                largeTresure++;

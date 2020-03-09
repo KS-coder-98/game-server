@@ -14,6 +14,7 @@
 #include <semaphore.h>
 
 
+
 struct MassageJoin
 {
     long mtype;

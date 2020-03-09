@@ -1,9 +1,6 @@
 #include "Main_Window.h"
 #include "Map_Window.h"
 #include "Treasure.h"
-#include "LargeTreasure.h"
-#include "Coins.h"
-//#include <thread>
 #include "initColor.h"
 #include "setNcurses.h"
 #include "server_pthread.h"
@@ -48,10 +45,10 @@ int main() {
     std::thread printStatsThread(printStats, &game_object, &lockPrint, &semPrintStat);
     std::thread inputThread(input, &lockPrint, &game_object, &maze, &semInput);
     std::thread tMenagmentPlayer(joinPlayer, &lockPrint, &game_object, &semJoinPlayer);
-    std::thread ptrintThread(printAll, &game_object, maze, &lockPrint, &semPrint);
+    std::thread printThread(printAll, &game_object, maze, &lockPrint, &semPrint);
     std::thread threadDetectionColision(collisionDetection, &game_object, &semColisionDetectet, &lockPrint);
 
-    while(game_object.stopFlag != 1)
+    while(game_object.stopFlag != STOP_VALUE)
     {
         if ( game_object.flagStart == 1 ){ // tu treba dorobić flage
             game_object.numberOfRound++;
@@ -70,9 +67,7 @@ int main() {
         usleep(500000);
     }
 
-    //close all staff
-
-
+    //todo close all staff
 
     refresh();
     getch(); //3

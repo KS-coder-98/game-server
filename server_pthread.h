@@ -15,9 +15,9 @@
 
 struct game
 {
-    std::vector<Coins*> all_coins;
-    std::vector<Treasure*> all_tresure;
-    std::vector<LargeTreasure*>all_large_treasure;
+    std::vector<Coins*> allCoins;
+    std::vector<Treasure*> allTreasure;
+    std::vector<LargeTreasure*>allLargeTreasure;
     std::vector<std::string>* mapS;
     std::vector<Beast*> allBeast;
     std::vector<std::thread*>moveBeast;
@@ -32,10 +32,10 @@ struct game
     unsigned int counterOfPlayer = 0;
 
 };
-void add_item(struct game *a, const Map_Window * maze, std::mutex* _lock, int option, sem_t * semagor);
-void printAll(struct game *a, const Map_Window & maze, std::mutex* _lock, sem_t * semafor);
+void add_item(struct game *a, const Map_Window * maze, std::mutex* _lock, int option, sem_t * sem);
+void printAll(struct game *a, const Map_Window & maze, std::mutex* _lock, sem_t * sem);
 void printStats(struct game *dataGame, std::mutex* _lock, sem_t *sem);
-void input(std::mutex *_lock, struct game* dataGame, Map_Window * maze, sem_t *semafor);
+void input(std::mutex *_lock, struct game* dataGame, Map_Window * maze, sem_t *sem);
 void collisionDetection(struct game* dataGame, sem_t *sem, std::mutex *lock);
 void printBackgroundStats();
 void check( Player * player, void * arg );

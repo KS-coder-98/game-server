@@ -10,12 +10,12 @@ Beneficial_items::Beneficial_items(const Map_Window & map)
 {
     unsigned int tempCoordinate = rand() % (map.getMaze().size() - 2) + 1;
     position.setY(tempCoordinate);
-        mvprintw(14, 100, "wysokosc = %d szerokosc = %d", map.getMaze().size(),  map.getMaze()[1].length());
+        mvprintw(14, 100, "wysokosc = %d szerokosc = %d", map.getMaze().size(),  map.getMaze()[1].length()); //todo debug need this line
     auto temp = map.getMaze();
     while (true){
         tempCoordinate = rand() % (map.getMaze()[1].length() - 2) + 1;
         position.setX(tempCoordinate);
-        if ( temp[position.getY()][position.getX()] != '#' )
+        if ( temp[position.getY()][position.getX()] != WALL )
             break;
     }
 }
@@ -25,22 +25,22 @@ void Beneficial_items::print_item(int option, const Map_Window & map) {
     attron(COLOR_PAIR(4));
     if ( option == COINS )
     {
-        mvprintw(position.getY()+map.get_startY(), position.getX()+map.get_startX(), "C");
+        mvprintw(COORDINATE_Y_PLUS_OFFSET, COORDINATE_X_PLUS_OFFSET, COINS_SIGN);
     }
     else if ( option == TREASURE )
     {
-        mvprintw(position.getY()+map.get_startY(), position.getX()+map.get_startX(), "t");
+        mvprintw(COORDINATE_Y_PLUS_OFFSET, COORDINATE_X_PLUS_OFFSET, TREASURE_SIGN);
     }
-    else if ( option == LARGETRASURE )
+    else if (option == LARGE_TREASURE )
     {
-        mvprintw(position.getY()+map.get_startY(), position.getX()+map.get_startX(), "T");
+        mvprintw(COORDINATE_Y_PLUS_OFFSET, COORDINATE_X_PLUS_OFFSET, LARGE_TREASURE_SIGN);
     }
-    else if ( option == 4 )
+    else if ( option == LEFT_TREASURE )
     {
-        mvprintw(position.getY()+map.get_startY(), position.getX()+map.get_startX(), "D");
+        mvprintw(COORDINATE_Y_PLUS_OFFSET, COORDINATE_X_PLUS_OFFSET, LEFT_TREASURE_SIGN);
     }
     else
-        mvprintw(5, 5, "erroro in file beneficial_items.cpp ");
+        mvprintw(5, 5, "erroro in file beneficial_items.cpp "); //todo information for debug
 }
 
 Beneficial_items::Beneficial_items(const struct game *dataGame) {

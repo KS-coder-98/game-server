@@ -34,25 +34,25 @@ void Player::movePlayer(const struct game *dataGAme, std::mutex *lock) {
             bufforPlayer.pop_back();
             if ( move == KEY_UP )
             {
-                if ((*pMap)[position.getY() - 1][position.getX()] != '#'){
+                if ((*pMap)[position.getY() - 1][position.getX()] != WALL){
                     position.setY(position.getY() - 1);
                 }
             }
             else if ( move == KEY_DOWN )
             {
-                if ((*pMap)[position.getY() + 1][position.getX()] != '#' ){
+                if ((*pMap)[position.getY() + 1][position.getX()] != WALL ){
                     position.setY(position.getY() + 1);
                 }
             }
             else if ( move == KEY_RIGHT)
             {
-                if ((*pMap)[position.getY()][position.getX() + 1] != '#' ){
+                if ((*pMap)[position.getY()][position.getX() + 1] != WALL ){
                     position.setX(position.getX() + 1);
                 }
             }
             else if ( move == KEY_LEFT)
             {
-                if ((*pMap)[position.getY()][position.getX() - 1] != '#' ){
+                if ((*pMap)[position.getY()][position.getX() - 1] != WALL ){
                     position.setX(position.getX() - 1);
                 }
             }
@@ -76,20 +76,20 @@ void Player::movePlayer(const struct game *dataGAme, std::mutex *lock) {
         {
             for ( size_t  j = 0; j<5; j++) // x
             {
-                msg.map[i][j] = '#';
+                msg.map[i][j] = WALL;
                 if ( i + position.getY() - 2 >= 0 && i + position.getY() - 2 <  (*dataGAme->mapS).size() && j  + position.getX() - 2 >= 0 && i + position.getY() - 2 <= (*dataGAme->mapS)[0].length()){
                     msg.map[i][j] = (*dataGAme->mapS)[i + position.getY() - 2][j + position.getX() - 2];
-                    for ( auto coins : dataGAme->all_coins ){
+                    for ( auto coins : dataGAme->allCoins ){
                         if (coins->getPosition() == Point(j + position.getX() - 2, i + position.getY() - 2) ) {
                             msg.map[i][j] = 'c';
                         }
                     }
-                    for ( auto tresure : dataGAme->all_tresure ){
+                    for ( auto tresure : dataGAme->allTreasure ){
                         if ( tresure->getPosition() == Point(j + position.getX() - 2, i + position.getY() - 2) ) {
                             msg.map[i][j] = 't';
                         }
                     }
-                    for ( auto largeTresure : dataGAme->all_large_treasure ){
+                    for ( auto largeTresure : dataGAme->allLargeTreasure ){
                         if ( largeTresure->getPosition() == Point(j + position.getX() - 2, i + position.getY() - 2) ) {
                             msg.map[i][j] = 'T';
                         }

@@ -5,22 +5,20 @@
 #include "Character.h"
 
 
-
-
 void Character::printCharapter(const Map_Window &map) {
     if ( optionShow == '*' )
     {
         attron(COLOR_PAIR(5));
-        mvprintw(position.getY()+map.get_startY(), position.getX()+map.get_startX(), "*");
+        mvprintw(COORDINATE_Y_PLUS_OFFSET, COORDINATE_X_PLUS_OFFSET, "*");
     }
     else if ( optionShow >= '1' && optionShow <= '4'  )
     {
         attron(COLOR_PAIR(4));
-        mvprintw(position.getY()+map.get_startY(), position.getX()+map.get_startX(), "%c", optionShow);
+        mvprintw(COORDINATE_Y_PLUS_OFFSET, COORDINATE_X_PLUS_OFFSET, "%c", optionShow);
     }
 
     else {
-        mvprintw(50, 61, "eRRRRRRRRRRRRRRRRRRRRRRRRRRRRR!!!!!!!!!!!!%c", optionShow);
+        mvprintw(50, 61, "eRRRRRRRRRRRRRRRRRRRRRRRRRRRRR!!!!!!!!!!!!%c", optionShow); //todo information for debug
     }
 }
 

@@ -6,72 +6,68 @@
 #include "Beast.h"
 #include "server_pthread.h"
 
-Beast::Beast(const struct game *dataGAme) : Character(dataGAme) {
+Beast::Beast(const struct game *dataGame) : Character(dataGame) {
     optionShow = '*';
 }
 
-void Beast::move(const struct game *dataGAme, std::mutex * lock) {
-    int i = 0;
-    int lastChose = 0;
-    while (true)
+void Beast::move(const struct game *dataGame, std::mutex * lock) {
+    int lastChose = DOWN;
+    while (dataGame->stopFlag != STOP_VALUE)
     {
         sem_wait(&sem);
         lock->lock();
-        auto temp = dataGAme->mapS;
-        if ( lastChose == 0 && (*temp)[position.getY() - 1][position.getX()] != '#'){
+        auto temp = dataGame->mapS;
+        if ( lastChose == DOWN && (*temp)[position.getY() - 1][position.getX()] != WALL){
             position.setY(position.getY() - 1);
         }
-        else if ( lastChose == 1 &&  (*temp)[position.getY() + 1][position.getX()] != '#' ){
+        else if ( lastChose == UP &&  (*temp)[position.getY() + 1][position.getX()] != WALL ){
             position.setY(position.getY() + 1);
         }
-        else if (lastChose == 2 &&  (*temp)[position.getY()][position.getX() + 1] != '#' ){
+        else if (lastChose == RIGHT &&  (*temp)[position.getY()][position.getX() + 1] != WALL ){
             position.setX(position.getX() + 1);
         }
-        else if (lastChose == 3 &&  (*temp)[position.getY()][position.getX() - 1] != '#' ){
+        else if (lastChose == LEFT &&  (*temp)[position.getY()][position.getX() - 1] != WALL ){
             position.setX(position.getX() - 1);
         }
         else{
-            int counter = 0;
+            int counter = DOWN;
             while (true){
                 int random = rand() % 4;
                 counter++;
-                if ( random == 0 && (*temp)[position.getY() - 1][position.getX()] != '#' ){
-                    if ( random == lastChose && counter < 30){
+                if ( random == DOWN && (*temp)[position.getY() - 1][position.getX()] != WALL ){
+                    if ( TRY_AGAIN){
                         continue;
                     }
                     position.setY(position.getY() - 1);
-                    lastChose = 0;
+                    lastChose = DOWN;
                     break;
                 }
-                else if ( random == 1 &&  (*temp)[position.getY() + 1][position.getX()] != '#'){
-                    if ( random == lastChose && counter < 30){
+                else if ( random == UP &&  (*temp)[position.getY() + 1][position.getX()] != WALL){
+                    if ( TRY_AGAIN){
                         continue;
                     }
                     position.setY(position.getY() + 1);
-                    lastChose = 1;
+                    lastChose = UP;
                     break;
                 }
-                else if ( random == 2 &&  (*temp)[position.getY()][position.getX() + 1] != '#' ){
-                    if ( random == lastChose && counter < 30){
+                else if ( random == RIGHT &&  (*temp)[position.getY()][position.getX() + 1] != WALL ){
+                    if ( TRY_AGAIN){
                         continue;
                     }
                     position.setX(position.getX() + 1);
-                    lastChose = 2;
+                    lastChose = RIGHT;
                     break;
                 }
-                else if ( random == 3 &&  (*temp)[position.getY()][position.getX() - 1] != '#'){
-                    if ( random == lastChose && counter < 30){
+                else if ( random == LEFT &&  (*temp)[position.getY()][position.getX() - 1] != WALL){
+                    if ( TRY_AGAIN){
                         continue;
                     }
                     position.setX(position.getX() - 1);
-                    lastChose = 3;
+                    lastChose = LEFT;
                     break;
                 }
             }
         }
-        i++;
         lock->unlock();
-        if (i == -1)
-            break;
     }
 }

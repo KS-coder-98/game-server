@@ -5,22 +5,12 @@
 #include <csignal>
 #include "menageOfPlayer.h"
 
-
-struct MassageServer
-{
-    long mtype;
-    pid_t pid;
-    bool ok;
-};
-
-
-
 void joinPlayer(std::mutex *_lock, struct game* dataGame, sem_t * semafor)
 {
     MassageJoin msgJoin;
     key_t keyJoin = ftok("tmp", 150);
     int msgIdJoin = msgget(keyJoin, 0666 | IPC_CREAT);
-    while ( dataGame->stopFlag != 1 ){
+    while ( dataGame->stopFlag != STOP_VALUE ){
         sem_wait(semafor);
         int err = msgrcv(msgIdJoin, &msgJoin, sizeof(MassageJoin), 5, IPC_NOWAIT);
         _lock->lock();
@@ -32,6 +22,7 @@ void joinPlayer(std::mutex *_lock, struct game* dataGame, sem_t * semafor)
                 dataGame->counterOfPlayer++;
             }
             else{
+                //todo send information to client server is full
 //                pid_t idPid = msgJoin.pid;
 //                key_t keyToQueue = ftok("tmp1", idPid);
 //                int msgId;

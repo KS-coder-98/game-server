@@ -5,10 +5,10 @@
 #ifndef GAME_SERVER_PLAYER_H
 #define GAME_SERVER_PLAYER_H
 
-#define UP 1
-#define  DOWN 2
-#define  LEFT 3
-#define RAIGHT 4
+//#define UP 1
+//#define  DOWN 2
+//#define  LEFT 3
+//#define RAIGHT 4
 
 #include "Character.h"
 
